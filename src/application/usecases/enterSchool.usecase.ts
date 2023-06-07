@@ -11,11 +11,13 @@ export class CreateSchoolUseCase{
     }
 
     async execute(code: string, name: string, idade: number){
-        const school = await this.schoolRepository.getSchool(code);
-        if(!school.isRegister()){
+        const school = this.schoolRepository.getSchool(code);
+        if(!(await school).isRegister){
             throw new Error("Sem vagas no momento!");
         }
         const studant = new Studant(code, name, idade)
         await this.schoolRepository.saveStudant(studant.code, studant.name, studant.idade)
+
+
     }
 }
